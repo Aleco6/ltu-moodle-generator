@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Nav from "@/components/nav"; 
 
 // Google fonts setup
 const geistSans = Geist({
@@ -20,27 +21,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{children: React.ReactNode;}>) 
+{
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
-      >
-        {/* Header with student number + navigation */}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`} >
         <header className="border-b">
           <div className="max-w-5xl mx-auto flex items-center justify-between p-3">
             <div aria-label="Student Number" className="font-mono text-sm">
               Student #: 19369305
             </div>
-            <nav aria-label="Primary" className="text-sm">
-              <a className="mr-3" href="/">Home</a>
-              <a className="mr-3" href="/about">About</a>
-              <a className="mr-3" href="/escape-room">Escape Room</a>
-              <a className="mr-3" href="/coding-races">Coding Races</a>
-              <a href="/court-room">Court Room</a>
-            </nav>
+            <Nav />
           </div>
         </header>
 
