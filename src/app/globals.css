@@ -5,11 +5,42 @@
   --foreground: #171717;
 }
 
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+.dark input,
+.dark textarea {
+  background-color: #000000; /* black box */
+  color: #ffffff;           /* white text */
+  border: 1px solid #ffffff; /* white border */
+  padding: 0.5rem;
+  border-radius: 0.375rem;  /* optional rounded corners */
+}
+
+.dark select {
+  background-color: #000000; /* black background */
+  color: #ffffff;           /* white text */
+  border: 1px solid #ffffff; /* white border */
+  padding: 0.5rem;
+  border-radius: 0.375rem;  /* optional rounded corners */
+}
+
+@media (prefers-color-scheme: dark) {
+  select {
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+  }
+}
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,8 +50,17 @@
   }
 }
 
+@media (prefers-color-scheme: dark) {
+  input,
+  textarea {
+    background-color: #000000; /* black box */
+    color: #ffffff;           /* white text */
+    border: 1px solid #ffffff; /* white border */
+  }
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
 }
