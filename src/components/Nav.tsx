@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const links = [
-  { href: "/", label: "Home" },           // Tabs = homepage
+  { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/escape-room", label: "Escape Room" },
   { href: "/coding-races", label: "Coding Races" },
@@ -17,25 +17,10 @@ export default function Nav() {
   const pathname = usePathname() || "/";
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // close mobile menu when route changes
   useEffect(() => setMenuOpen(false), [pathname]);
 
   return (
-    <div className="relative flex items-center gap-2">
-      {/* Hamburger (always visible; add md:hidden later if desired) */}
-      <button
-        type="button"
-        aria-label="Open menu"
-        aria-expanded={menuOpen}
-        aria-controls="primary-menu-popover"
-        onClick={() => setMenuOpen((v) => !v)}
-        className="inline-flex items-center justify-center rounded-md border px-2 py-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-      >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-          <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-        </svg>
-      </button>
-
+    <div className="relative flex items-center gap-2 w-full">
       {/* Desktop menu */}
       <nav aria-label="Primary" className="flex items-center gap-3">
         {links.map((l) => {
@@ -55,10 +40,35 @@ export default function Nav() {
         })}
       </nav>
 
-      {/* Theme toggle from provider */}
+
       <ThemeToggle />
 
-      {/* Mobile popover */}
+
+      <button
+        type="button"
+        aria-label="Open menu"
+        aria-expanded={menuOpen}
+        aria-controls="primary-menu-popover"
+        onClick={() => setMenuOpen((v) => !v)}
+        className="ml-auto inline-flex items-center justify-center rounded-md border px-2 py-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+      >
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden
+        >
+          <path
+            d="M3 6h18M3 12h18M3 18h18"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </svg>
+      </button>
+
+      {/* Mobile dropdown menu */}
       <div
         id="primary-menu-popover"
         className={`absolute right-0 top-full mt-2 w-56 rounded-lg border bg-white dark:bg-neutral-900 shadow-lg p-2 ${
