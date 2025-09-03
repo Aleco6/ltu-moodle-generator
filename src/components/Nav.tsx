@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
+import { setCookie, getCookie } from "@/lib/cookies";
 
 const links = [
   { href: "/", label: "Home" },
@@ -13,9 +14,17 @@ const links = [
   { href: "/court-room", label: "Court Room" },
 ];
 
+
+
 export default function Nav() {
   const pathname = usePathname() || "/";
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setCookie("lastPath", pathname, 7);
+    setMenuOpen(false);
+  }, [pathname]);
+
 
   useEffect(() => setMenuOpen(false), [pathname]);
 
