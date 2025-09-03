@@ -12,9 +12,8 @@ export default function AboutPage() {
         <h2 className="text-xl font-semibold">How to use this website</h2>
         <iframe
           className="w-full h-full rounded"
-          src="https://www.youtube.com/embed/UYXEcY0dGi8?si=UXwpAumvaS--96JZ" 
+          src="https://www.youtube.com/embed/T-uH30ZSgTI"
           title="How to use this website"
-          frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
         />
