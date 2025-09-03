@@ -1,4 +1,3 @@
-// components/Breadcrumbs.tsx
 'use client';
 
 import Link from 'next/link';
@@ -8,14 +7,14 @@ export default function Breadcrumbs() {
   const pathname = usePathname() || '/';
   const segments = pathname.split('/').filter(Boolean);
 
-  const crumbs = [
-    { href: '/', label: 'Home' },
-    ...segments.map((seg, i) => {
-      const href = '/' + segments.slice(0, i + 1).join('/');
-      const label = decodeURIComponent(seg).replace(/-/g, ' ');
-      return { href, label: label.charAt(0).toUpperCase() + label.slice(1) };
-    }),
-  ];
+
+  const crumbs = pathname === '/' 
+    ? [{ href: '/', label: 'Home' }]
+    : segments.map((seg, i) => {
+        const href = '/' + segments.slice(0, i + 1).join('/');
+        const label = decodeURIComponent(seg).replace(/-/g, ' ');
+        return { href, label: label.charAt(0).toUpperCase() + label.slice(1) };
+      });
 
   return (
     <nav aria-label="Breadcrumb" className="breadcrumbs">

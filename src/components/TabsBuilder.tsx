@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import { getStoredTabData, storeTabData } from "@/lib/storage";
 
 export default function TabsBuilder() {
-  const [title, setTitle] = useState("Tabs Generator");
+  const [title, setTitle] = useState("LTU Moodle - Tabs Generator");
   const [tabCount, setTabCount] = useState(1);
   const [labels, setLabels] = useState<string[]>(["Tab 1"]);
   const [contents, setContents] = useState<string[]>([
@@ -228,11 +228,102 @@ function generateTabsHTML({
 </div>`;
     })
     .join("\n");
-  return `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>${escapeHtml(
-    title
-  )}</title></head><body style="font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;; line-height:1.5; padding:24px;"><h1 style="margin-top:0; font-size:24px;">${escapeHtml(
-    title
-  )}</h1><div role="tablist" aria-label="Tabs" style="display:flex; flex-wrap:wrap; align-items:center;">${tabButtons}</div>${panels}<script>(function(){var tablist=document.querySelector('[role="tablist"]');if(!tablist)return;function setActive(index){var tabs=tablist.querySelectorAll('[role="tab"]');var panels=document.querySelectorAll('[role="tabpanel"]');tabs.forEach(function(tab,i){var selected=i===index;tab.setAttribute('aria-selected',String(selected));tab.setAttribute('tabindex',selected?'0':'-1');var panelId=tab.getAttribute('aria-controls');var panel=panelId?document.getElementById(panelId):null;if(panel){if(selected){panel.removeAttribute('hidden');}else{panel.setAttribute('hidden','');}}tab.style.background=selected?'${themeColor}':'transparent';tab.style.color=selected?'#ffffff':'${themeColor}';});if(tabs[index]&&typeof tabs[index].focus==='function'){tabs[index].focus();}}tablist.addEventListener('click',function(e){var target=e.target;if(!(target instanceof HTMLElement))return;if(target.getAttribute('role')==='tab'){var tabs=Array.prototype.slice.call(tablist.querySelectorAll('[role="tab"]'));var index=tabs.indexOf(target);if(index>-1)setActive(index);}});tablist.addEventListener('keydown',function(e){var tabs=Array.prototype.slice.call(tablist.querySelectorAll('[role="tab"]'));var current=tabs.findIndex(function(t){return t.getAttribute('aria-selected')==='true';});if(current<0)current=0;if(e.key==='ArrowRight'){e.preventDefault();setActive((current+1)%tabs.length);}if(e.key==='ArrowLeft'){e.preventDefault();setActive((current-1+tabs.length)%tabs.length);}if(e.key==='Home'){e.preventDefault();setActive(0);}if(e.key==='End'){e.preventDefault();setActive(tabs.length-1);}});})();</script></body></html>`;
+  return `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>${escapeHtml(title)}</title>
+  </head>
+  <body style="font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;; line-height: 1.5; padding: 24px;">
+    
+    <h1 style="margin-top: 0; font-size: 24px;">${escapeHtml(title)}</h1>
+
+    <div role="tablist" aria-label="Tabs" style="display: flex; flex-wrap: wrap; align-items: center;">
+      ${tabButtons}
+    </div>
+
+    ${panels}
+
+    <script>
+      (function () {
+        var tablist = document.querySelector('[role="tablist"]');
+        if (!tablist) return;
+
+        function setActive(index) {
+          var tabs = tablist.querySelectorAll('[role="tab"]');
+          var panels = document.querySelectorAll('[role="tabpanel"]');
+
+          tabs.forEach(function (tab, i) {
+            var selected = i === index;
+
+            tab.setAttribute('aria-selected', String(selected));
+            tab.setAttribute('tabindex', selected ? '0' : '-1');
+
+            var panelId = tab.getAttribute('aria-controls');
+            var panel = panelId ? document.getElementById(panelId) : null;
+
+            if (panel) {
+              if (selected) {
+                panel.removeAttribute('hidden');
+              } else {
+                panel.setAttribute('hidden', '');
+              }
+            }
+
+            tab.style.background = selected ? '${themeColor}' : 'transparent';
+            tab.style.color = selected ? '#ffffff' : '${themeColor}';
+          });
+
+          if (tabs[index] && typeof tabs[index].focus === 'function') {
+            tabs[index].focus();
+          }
+        }
+
+        tablist.addEventListener('click', function (e) {
+          var target = e.target;
+          if (!(target instanceof HTMLElement)) return;
+
+          if (target.getAttribute('role') === 'tab') {
+            var tabs = Array.prototype.slice.call(tablist.querySelectorAll('[role="tab"]'));
+            var index = tabs.indexOf(target);
+            if (index > -1) setActive(index);
+          }
+        });
+
+        tablist.addEventListener('keydown', function (e) {
+          var tabs = Array.prototype.slice.call(tablist.querySelectorAll('[role="tab"]'));
+          var current = tabs.findIndex(function (t) {
+            return t.getAttribute('aria-selected') === 'true';
+          });
+
+          if (current < 0) current = 0;
+
+          if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            setActive((current + 1) % tabs.length);
+          }
+
+          if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            setActive((current - 1 + tabs.length) % tabs.length);
+          }
+
+          if (e.key === 'Home') {
+            e.preventDefault();
+            setActive(0);
+          }
+
+          if (e.key === 'End') {
+            e.preventDefault();
+            setActive(tabs.length - 1);
+          }
+        });
+      })();
+    </script>
+
+  </body>
+</html>`;
 }
 
 function escapeHtml(s: string) {

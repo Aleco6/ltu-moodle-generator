@@ -77,7 +77,6 @@ export default function Nav() {
         </svg>
       </button>
 
-      {/* Mobile dropdown menu */}
       <div
         id="primary-menu-popover"
         className={`absolute right-0 top-full mt-2 w-56 rounded-lg border bg-white dark:bg-neutral-900 shadow-lg p-2 ${

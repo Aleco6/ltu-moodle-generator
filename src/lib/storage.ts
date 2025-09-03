@@ -43,10 +43,10 @@ export function storeTabData(data: TabData): void {
   if (typeof window === 'undefined') return;
 
   try {
-    // Store in cookie
+   
     setCookie('tabData', JSON.stringify(data));
     
-    // Debug log
+   
     console.log('Stored tab data:', data);
     console.log('Current cookie:', document.cookie);
   } catch (error) {

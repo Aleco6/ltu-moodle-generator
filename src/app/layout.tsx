@@ -3,10 +3,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-import Nav from "@/components/Nav";            // <- ensure file is components/Nav.tsx
+import Nav from "@/components/Nav";            
 import Link from "next/link";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import Breadcrumbs from "@/components/Breadcrumbs"; // <- add this component
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -14,11 +14,9 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 export const metadata: Metadata = {
   title: "LTU Moodle Generator",
   description: "Generates HTML + JS with inline CSS for Moodle",
-  applicationName: "LTU Moodle Generator",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
   authors: [{ name: "Alexander-James Anglias" }],
   creator: "Alexander-James Anglias",
-  viewport: { width: "device-width", initialScale: 1 },
   other: { "color-scheme": "light dark" },
 };
 
@@ -37,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col bg-white text-black dark:bg-[#0b0b0b] dark:text-white`}
       >
         <ThemeProvider>
-          {/* Skip link */}
+         
           <a
             href="#content"
             className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-lg focus:bg-yellow-300 focus:text-black focus:px-3 focus:py-2"
@@ -53,7 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   Student #: 19369305
                 </div>
                 <Link href="/" className="text-sm font-semibold hover:underline underline-offset-4">
-                  LTU Moodle Generator
+                  
                 </Link>
               </div>
               <Nav />
