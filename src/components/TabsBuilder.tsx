@@ -148,7 +148,7 @@ export default function TabsBuilder() {
           {uiLabels.map((lbl, i) => (
             <div key={`content-${i}`} className="space-y-1">
               <label className="block text-xs font-medium" htmlFor={`content-${i}`}>
-                Content for "{lbl?.trim() ? lbl : `Tab ${i + 1}`}"
+                Content for &quot;{lbl?.trim() ? lbl : `Tab ${i + 1}`}&quot;
               </label>
               <textarea
                 id={`content-${i}`}

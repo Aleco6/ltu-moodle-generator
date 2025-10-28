@@ -1,87 +1,157 @@
 @import "tailwindcss";
 
+/*
+  Theme tokens
+  - Uses Tailwind v4 @theme inline with CSS variables.
+  - Components reference tokens like bg-primary, text-muted-foreground, ring-ring, etc.
+  - Define accessible light/dark palettes with sufficient contrast.
+*/
+
+/* Base (light) palette */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0b0b0b;
+  --primary: #2563eb; /* blue-600 */
+  --primary-foreground: #ffffff;
+  --secondary: #f3f4f6; /* gray-100 */
+  --secondary-foreground: #111827; /* gray-900 */
+  --accent: #e5e7eb; /* gray-200 */
+  --accent-foreground: #111827;
+  --muted: #f3f4f6; /* gray-100 */
+  --muted-foreground: #6b7280; /* gray-500 */
+  --destructive: #dc2626; /* red-600 */
+  --destructive-foreground: #ffffff;
+  --input: #e5e7eb; /* border color */
+  --input-background: #ffffff;
+  --border: #e5e7eb;
+  --ring: #2563eb; /* focus ring */
+  --card: #ffffff;
+  --card-foreground: #0b0b0b;
+  --popover: #ffffff;
+  --popover-foreground: #0b0b0b;
 }
 
+/* Dark palette overrides */
 .dark {
-  --background: #0a0a0a;
+  --background: #0b0b0b;
   --foreground: #ededed;
-}
-
-.dark input,
-.dark textarea {
-  background-color: #000000; /* black box */
-  color: #ffffff;           /* white text */
-  border: 1px solid #ffffff; /* white border */
-  padding: 0.5rem;
-  border-radius: 0.375rem;  /* optional rounded corners */
-}
-
-.dark select {
-  background-color: #000000; /* black background */
-  color: #ffffff;           /* white text */
-  border: 1px solid #ffffff; /* white border */
-  padding: 0.5rem;
-  border-radius: 0.375rem;  /* optional rounded corners */
-}
-
-.dark select option {
-  background-color: #000000; /* black option background */
-  color: #ffffff;           /* white text */
-}
-
-
-
-
-
-@media (prefers-color-scheme: dark) {
-  select {
-    background-color: #000000;
-    color: #ffffff;
-    border: 1px solid #ffffff;
-  }
-}
-
-.dark [aria-controls="primary-menu-popover"]:hover {
-  background-color: #262626; /* neutral-800 */
-}
-
-.dark #primary-menu-popover {
-  background-color: #171717;
-  color: #ffffff;
-  border: 1px solid #ffffff;
-}
-.dark #primary-menu-popover [role="menuitem"]:hover {
-  background-color: #262626;
+  --primary: #2563eb; /* keep strong for contrast */
+  --primary-foreground: #ffffff;
+  --secondary: #262626; /* neutral-800 */
+  --secondary-foreground: #e5e7eb;
+  --accent: #262626;
+  --accent-foreground: #e5e7eb;
+  --muted: #1f2937; /* gray-800/700 */
+  --muted-foreground: #9ca3af; /* gray-400 */
+  --destructive: #ef4444; /* red-500 */
+  --destructive-foreground: #0b0b0b;
+  --input: #374151; /* gray-700 */
+  --input-background: #0b0b0b;
+  --border: #262626;
+  --ring: #60a5fa; /* blue-400 */
+  --card: #0b0b0b;
+  --card-foreground: #ededed;
+  --popover: #0b0b0b;
+  --popover-foreground: #ededed;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
   --font-sans: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  input,
-  textarea {
-    background-color: #000000; /* black box */
-    color: #ffffff;           /* white text */
-    border: 1px solid #ffffff; /* white border */
-  }
-}
-
+/* Global element defaults using tokens */
 body {
   background-color: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-sans);
+}
+
+/* Form controls in both themes, using tokens for contrast */
+input,
+textarea,
+select {
+  background-color: var(--color-input-background);
+  color: var(--color-foreground);
+  border: 1px solid var(--color-border);
+}
+
+select option {
+  background-color: var(--color-input-background);
+  color: var(--color-foreground);
+}
+
+/* Accessible focus states */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-contrast: more) {
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  [role="button"]:focus-visible {
+    outline-width: 3px;
+  }
+}
+
+/* Selection colors with sufficient contrast */
+::selection {
+  background-color: #bfdbfe; /* blue-200 */
+  color: #0b0b0b; /* near-black */
+}
+.dark ::selection {
+  background-color: #1e3a8a; /* blue-800 */
+  color: #ffffff;
+}
+
+/* Nav popover adjustments for dark mode */
+.dark [aria-controls="primary-menu-popover"]:hover {
+  background-color: #262626; /* neutral-800 */
+}
+.dark #primary-menu-popover {
+  background-color: var(--color-popover);
+  color: var(--color-popover-foreground);
+  border: 1px solid var(--color-border);
+}
+.dark #primary-menu-popover [role="menuitem"]:hover {
+  background-color: #262626;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

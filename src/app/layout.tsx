@@ -30,6 +30,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="color-scheme" content="light dark" />
         <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#0b0b0b" media="(prefers-color-scheme: dark)" />
+        {/* Prevent theme flash: set dark class before hydration */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(() => {try{const ls=localStorage.getItem('theme');const cookie=(document.cookie.match(/(?:^|; )theme=([^;]+)/)||[])[1];const pref=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;const t=(ls||cookie||'system');const dark=(t==='dark'||(t==='system'&&pref));document.documentElement.classList.toggle('dark',!!dark);}catch(e){}})();`,
+          }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col bg-white text-black dark:bg-[#0b0b0b] dark:text-white`}
@@ -44,7 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </a>
 
           {/* Header */}
-          <header role="banner" className="border-b bg-white/70 dark:bg-black/30 backdrop-blur">
+          <header role="banner" className="border-b bg-white/70 dark:bg-black/30 border-neutral-200 dark:border-neutral-800 backdrop-blur transition-colors">
             <div className="max-w-5xl mx-auto flex items-center justify-between gap-3 p-3">
               <div className="flex items-center gap-3">
                 <div aria-label="Student Number" className="font-mono text-sm">
@@ -67,7 +73,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </main>
 
           {/* Footer */}
-          <footer role="contentinfo" className="border-t bg-white/60 dark:bg-black/30 backdrop-blur">
+          <footer role="contentinfo" className="border-t bg-white/60 dark:bg-black/30 border-neutral-200 dark:border-neutral-800 backdrop-blur transition-colors">
             <div className="max-w-5xl mx-auto p-3 text-xs text-neutral-600 dark:text-neutral-300 flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-3">
               <span>© {year} Alexander-James Anglias</span>
               <span className="hidden md:inline">•</span>

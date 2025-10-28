@@ -27,9 +27,12 @@ export default function Nav() {
   useEffect(() => setMenuOpen(false), [pathname]);
 
   return (
-    <div className="relative flex items-center gap-2 w-full">
+    <div className="relative flex items-center gap-2 w-full text-neutral-900 dark:text-neutral-100 transition-colors">
       {/* Desktop menu */}
-      <nav aria-label="Primary" className="flex items-center gap-3">
+      <nav
+        aria-label="Primary"
+        className="flex items-center gap-3"
+      >
         {links.map((l) => {
           const active = pathname === l.href;
           return (
@@ -37,7 +40,7 @@ export default function Nav() {
               key={l.href}
               href={l.href}
               aria-current={active ? "page" : undefined}
-              className={`px-2 py-1.5 rounded hover:bg-neutral-100 dark:hover:bg-neutral-800 ${
+              className={`px-2 py-1.5 rounded transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800 ${
                 active ? "font-semibold underline underline-offset-4" : ""
               }`}
             >
@@ -57,7 +60,7 @@ export default function Nav() {
         aria-expanded={menuOpen}
         aria-controls="primary-menu-popover"
         onClick={() => setMenuOpen((v) => !v)}
-        className="ml-auto inline-flex items-center justify-center rounded-md border px-2 py-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+        className="ml-auto inline-flex items-center justify-center rounded-md border px-2 py-1.5 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800 border-neutral-200 dark:border-neutral-800"
       >
         <svg
           width="22"
@@ -77,7 +80,7 @@ export default function Nav() {
 
       <div
         id="primary-menu-popover"
-        className={`absolute right-0 top-full mt-2 w-56 rounded-lg border bg-white dark:bg-neutral-900 shadow-lg p-2 ${
+        className={`absolute right-0 top-full mt-2 w-56 rounded-lg border shadow-lg p-2 transition-colors bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-neutral-100 ${
           menuOpen ? "" : "hidden"
         } z-50`}
       >
@@ -90,7 +93,7 @@ export default function Nav() {
                 href={l.href}
                 onClick={() => setMenuOpen(false)}
                 aria-current={active ? "page" : undefined}
-                className={`px-3 py-2 rounded hover:bg-neutral-100 dark:hover:bg-neutral-800 ${
+                className={`px-3 py-2 rounded transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800 ${
                   active ? "font-semibold underline underline-offset-4" : ""
                 }`}
               >
