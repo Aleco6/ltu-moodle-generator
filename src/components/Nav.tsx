@@ -10,8 +10,6 @@ const links = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/escape-room", label: "Escape Room" },
-  { href: "/coding-races", label: "Coding Races" },
-  { href: "/court-room", label: "Court Room" },
 ];
 
 
