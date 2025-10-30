@@ -52,3 +52,25 @@ export async function PUT(
     );
   }
 }
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    await prisma.attempt.delete({
+      where: { id: params.id }
+    });
+
+    return NextResponse.json(
+      { message: 'Attempt deleted successfully' },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Error deleting attempt:', error);
+    return NextResponse.json(
+      { error: 'Failed to delete attempt' },
+      { status: 500 }
+    );
+  }
+}

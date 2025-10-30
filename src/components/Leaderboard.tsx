@@ -55,8 +55,10 @@ export function Leaderboard() {
         const data = await response.json().catch(() => ({}));
         throw new Error(data.error ?? 'Failed to load leaderboard.');
       }
-      const data = (await response.json()) as { attempts?: Attempt[] };
-      setAttempts(sortAttempts(data.attempts ?? []));
+      const data = await response.json();
+      // Handle both array format and object with attempts property
+      const attemptsArray = Array.isArray(data) ? data : (data.attempts ?? []);
+      setAttempts(sortAttempts(attemptsArray));
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load leaderboard.');
     } finally {

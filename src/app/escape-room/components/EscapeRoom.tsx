@@ -253,6 +253,51 @@ export function EscapeRoom({ playerName, difficulty, timerMinutes }: EscapeRoomP
     setAttemptSaveState('idle');
   };
 
+  const handleManualSave = async () => {
+    if (attemptSaveState === 'saving' || attemptSaveState === 'saved') {
+      return;
+    }
+
+    try {
+      setAttemptSaveState('saving');
+      setAttemptError(null);
+
+      const currentDuration = (timerMinutes * 60) - timeRemaining;
+      const isCompleted = allTerminalsComplete && showVictory;
+
+      const response = await fetch('/api/attempts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          player: playerName,
+          difficulty,
+          durationSec: currentDuration,
+          completed: isCompleted
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to save attempt (${response.status})`);
+      }
+
+      const data = (await response.json()) as { id?: string };
+      if (data.id) {
+        setAttemptId(data.id);
+      }
+
+      setAttemptSaveState('saved');
+      
+      // Reset to idle after 3 seconds to allow saving again
+      setTimeout(() => {
+        setAttemptSaveState('idle');
+      }, 3000);
+    } catch (error) {
+      console.error('Failed to save attempt', error);
+      setAttemptError(error instanceof Error ? error.message : 'Unknown error');
+      setAttemptSaveState('error');
+    }
+  };
+
   const handlePlayAgain = () => {
     window.location.reload();
   };
@@ -338,6 +383,32 @@ export function EscapeRoom({ playerName, difficulty, timerMinutes }: EscapeRoomP
           <div className={`flex items-center gap-2 ${getTimerColor()}`}>
             <Timer className="w-6 h-6" />
             <span className="text-2xl font-bold">{formatTime(timeRemaining)}</span>
+          </div>
+
+          {/* Save Button */}
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={handleManualSave}
+              disabled={attemptSaveState === 'saving'}
+              variant={attemptSaveState === 'saved' ? 'default' : 'outline'}
+              size="sm"
+              className={
+                attemptSaveState === 'saved' 
+                  ? 'bg-green-600 hover:bg-green-700 text-white'
+                  : attemptSaveState === 'error'
+                  ? 'border-red-500 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20'
+                  : ''
+              }
+            >
+              {attemptSaveState === 'saving' ? 'Saving...' : 
+               attemptSaveState === 'saved' ? 'Saved!' : 
+               attemptSaveState === 'error' ? 'Retry Save' : 'Save Progress'}
+            </Button>
+            {attemptError && (
+              <span className="text-xs text-red-600 dark:text-red-400 max-w-32 truncate" title={attemptError}>
+                {attemptError}
+              </span>
+            )}
           </div>
         </div>
 
