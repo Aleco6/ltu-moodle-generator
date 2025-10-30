@@ -27,10 +27,19 @@ export function ChallengeDialog({
   const [code, setCode] = useState('');
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error', message: string } | null>(null);
   const [showHint, setShowHint] = useState(false);
+
+  const sanitizeForCheck = (input: string) => {
+    // Remove single-line and block comments so solutions with helpful notes still pass.
+    return input
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/\/\/.*$/gm, '')
+      .trim();
+  };
   
   const checkSolution = () => {
     // Use the task's built-in check function
-    const isCorrect = task.checkFunction(code);
+    const sanitized = sanitizeForCheck(code);
+    const isCorrect = task.checkFunction(sanitized);
     
     if (isCorrect) {
       const randomDigit = Math.floor(Math.random() * 10);

@@ -7,12 +7,14 @@ import { Clock } from 'lucide-react';
 type Difficulty = 'easy' | 'medium' | 'hard';
 
 interface IntroDialogProps {
-  onStart: (difficulty: Difficulty, timerMinutes: number) => void;
+  onStart: (playerName: string, difficulty: Difficulty, timerMinutes: number) => void;
 }
 
 export function IntroDialog({ onStart }: IntroDialogProps) {
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | null>(null);
   const [timerMinutes, setTimerMinutes] = useState(30);
+  const [playerName, setPlayerName] = useState('');
+  const [nameTouched, setNameTouched] = useState(false);
 
   const difficultyOptions = [
     {
@@ -48,6 +50,14 @@ export function IntroDialog({ onStart }: IntroDialogProps) {
       setTimerMinutes(option.defaultTime);
     }
   };
+
+  const handleNameChange = (value: string) => {
+    const cleanedValue = value.toUpperCase().replace(/[^A-Z]/g, '');
+    setPlayerName(cleanedValue);
+  };
+
+  const isNameValid = /^[A-Z]{3,8}$/.test(playerName);
+  const showNameError = (nameTouched || playerName.length >= 3) && !isNameValid;
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -110,6 +120,29 @@ export function IntroDialog({ onStart }: IntroDialogProps) {
             </div>
           </div>
 
+          {/* Player Name */}
+          <div className="border-t border-slate-300 dark:border-slate-700 pt-4">
+            <label className="block text-sm font-medium text-neutral-800 dark:text-neutral-200 mb-2" htmlFor="player-name">
+              Arcade Name (3–8 letters)
+            </label>
+            <input
+              id="player-name"
+              type="text"
+              value={playerName}
+              onChange={(event) => handleNameChange(event.target.value)}
+              onBlur={() => setNameTouched(true)}
+              maxLength={8}
+              autoComplete="off"
+              className="w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-3 py-2 text-sm tracking-widest uppercase outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
+              placeholder="ENTER NAME"
+            />
+            {showNameError && (
+              <p className="mt-2 text-xs text-red-500">
+                Name must be 3-8 letters (A-Z).
+              </p>
+            )}
+          </div>
+
           {/* Timer Selection */}
           {selectedDifficulty && (
             <div className="bg-slate-100 dark:bg-slate-900 p-4 rounded border border-slate-300 dark:border-slate-700">
@@ -145,10 +178,10 @@ export function IntroDialog({ onStart }: IntroDialogProps) {
         </div>
 
         <Button 
-          onClick={() => selectedDifficulty && onStart(selectedDifficulty, timerMinutes)}
+          onClick={() => selectedDifficulty && isNameValid && onStart(playerName, selectedDifficulty, timerMinutes)}
           className="w-full bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
           size="lg"
-          disabled={!selectedDifficulty}
+          disabled={!selectedDifficulty || !isNameValid}
         >
           {selectedDifficulty ? 'Enter Sprint Zero' : 'Select Difficulty to Continue'}
         </Button>

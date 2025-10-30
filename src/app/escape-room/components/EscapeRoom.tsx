@@ -25,7 +25,20 @@ interface HintSpot {
 
 type Difficulty = 'easy' | 'medium' | 'hard';
 
+type AttemptSaveState = 'idle' | 'saving' | 'saved' | 'error';
+
+interface AttemptRecord {
+  id: string;
+  player: string;
+  difficulty: Difficulty;
+  durationSec: number;
+  completed: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface EscapeRoomProps {
+  playerName: string;
   difficulty: Difficulty;
   timerMinutes: number;
 }
@@ -77,7 +90,7 @@ const hintSpots: HintSpot[] = [
 // Door position (GREEN DOT)
 const doorPosition = { x: '90.4%', y: '47.8%' };
 
-export function EscapeRoom({ difficulty, timerMinutes }: EscapeRoomProps) {
+export function EscapeRoom({ playerName, difficulty, timerMinutes }: EscapeRoomProps) {
   const [selectedTerminal, setSelectedTerminal] = useState<{ terminal: Terminal; taskIndex: number } | null>(null);
   const [completedTasks, setCompletedTasks] = useState<Set<string>>(new Set());
   const [terminalProgress, setTerminalProgress] = useState<Map<number, number>>(new Map([[1, 0], [2, 0], [3, 0]]));
@@ -93,6 +106,10 @@ export function EscapeRoom({ difficulty, timerMinutes }: EscapeRoomProps) {
   const [timeRemaining, setTimeRemaining] = useState(timerMinutes * 60); // Convert to seconds
   const [timerActive, setTimerActive] = useState(true);
   const [gameOver, setGameOver] = useState(false);
+  const [durationSec, setDurationSec] = useState<number | null>(null);
+  const [attemptSaveState, setAttemptSaveState] = useState<AttemptSaveState>('idle');
+  const [attemptError, setAttemptError] = useState<string | null>(null);
+  const [attemptId, setAttemptId] = useState<string | null>(null);
 
   const tasks = getTasksForDifficulty(difficulty);
   const totalTasksPerTerminal = difficulty === 'easy' ? 1 : difficulty === 'medium' ? 2 : 3;
@@ -118,6 +135,57 @@ export function EscapeRoom({ difficulty, timerMinutes }: EscapeRoomProps) {
 
     return () => clearInterval(interval);
   }, [timerActive, timeRemaining, showVictory]);
+
+  useEffect(() => {
+    if (!showVictory || durationSec === null || attemptSaveState !== 'idle') {
+      return;
+    }
+
+    const controller = new AbortController();
+
+    const submitAttempt = async () => {
+      try {
+        setAttemptSaveState('saving');
+        setAttemptError(null);
+
+        const response = await fetch('/api/attempts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            player: playerName,
+            difficulty,
+            durationSec,
+            completed: true
+          }),
+          signal: controller.signal
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to save attempt (${response.status})`);
+        }
+
+        const data = (await response.json()) as { attempt?: AttemptRecord };
+        if (data.attempt?.id) {
+          setAttemptId(data.attempt.id);
+        }
+
+        setAttemptSaveState('saved');
+      } catch (error) {
+        if (error instanceof Error && error.name === 'AbortError') {
+          return;
+        }
+        console.error('Failed to save attempt', error);
+        setAttemptError(error instanceof Error ? error.message : 'Unknown error');
+        setAttemptSaveState('error');
+      }
+    };
+
+    submitAttempt();
+
+    return () => {
+      controller.abort();
+    };
+  }, [showVictory, durationSec, attemptSaveState, playerName, difficulty]);
 
   // Format time as MM:SS
   const formatTime = (seconds: number) => {
@@ -155,6 +223,11 @@ export function EscapeRoom({ difficulty, timerMinutes }: EscapeRoomProps) {
 
   const handlePinSubmit = () => {
     if (allTerminalsComplete) {
+      const elapsed = Math.max(timerMinutes * 60 - timeRemaining, 0);
+      setDurationSec(elapsed);
+      setAttemptSaveState('idle');
+      setAttemptError(null);
+      setAttemptId(null);
       setShowVictory(true);
       setTimerActive(false);
     }
@@ -169,6 +242,23 @@ export function EscapeRoom({ difficulty, timerMinutes }: EscapeRoomProps) {
     if (allTerminalsComplete) {
       setShowPinDialog(true);
     }
+  };
+
+  const handleRetrySaveAttempt = () => {
+    if (attemptSaveState === 'saving') {
+      return;
+    }
+    setAttemptError(null);
+    setAttemptId(null);
+    setAttemptSaveState('idle');
+  };
+
+  const handlePlayAgain = () => {
+    window.location.reload();
+  };
+
+  const handleViewLeaderboard = () => {
+    window.location.href = '/leaderboard';
   };
 
   const handleImageClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -210,17 +300,39 @@ export function EscapeRoom({ difficulty, timerMinutes }: EscapeRoomProps) {
 
   // Victory Screen
   if (showVictory) {
-    return <VictoryDialog />;
+    const finalDuration = durationSec ?? Math.max(timerMinutes * 60 - timeRemaining, 0);
+    return (
+      <VictoryDialog
+        playerName={playerName}
+        difficulty={difficulty}
+        durationSec={finalDuration}
+        totalTasks={totalTasks}
+        completedTasks={completedTasks.size}
+        attemptId={attemptId}
+        saveState={attemptSaveState}
+        saveError={attemptError}
+        onPlayAgain={handlePlayAgain}
+        onViewLeaderboard={handleViewLeaderboard}
+        onRetrySave={handleRetrySaveAttempt}
+      />
+    );
   }
 
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 p-4">
       {/* Header */}
       <div className="max-w-6xl mx-auto mb-6">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
           <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200">
             Sprint Zero Escape Room
           </h1>
+          
+          <div className="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
+            <span>Player</span>
+            <Badge variant="outline" className="border-red-500 text-red-600 dark:text-red-400">
+              {playerName}
+            </Badge>
+          </div>
           
           {/* Timer */}
           <div className={`flex items-center gap-2 ${getTimerColor()}`}>
@@ -243,6 +355,38 @@ export function EscapeRoom({ difficulty, timerMinutes }: EscapeRoomProps) {
             value={(completedTasks.size / totalTasks) * 100} 
             className="h-2"
           />
+        </div>
+
+        {/* PIN Tracker */}
+        <div className="mt-4 bg-white dark:bg-slate-800 rounded-lg p-4 border border-neutral-300 dark:border-neutral-700">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+              PIN Tracker
+            </span>
+            <Badge variant="outline" className="text-xs">
+              {collectedDigits.length}/{totalTasks} digits logged
+            </Badge>
+          </div>
+          <div className="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-9 gap-2">
+            {Array.from({ length: totalTasks }).map((_, index) => {
+              const digit = collectedDigits[index];
+              return (
+                <div
+                  key={`pin-digit-${index}`}
+                  className={`flex h-12 items-center justify-center rounded-md border text-lg font-semibold tracking-widest ${
+                    digit !== undefined
+                      ? 'border-green-500 bg-green-50 text-green-700 dark:border-green-500/70 dark:bg-green-900/30 dark:text-green-300'
+                      : 'border-dashed border-slate-400 bg-slate-100 text-slate-400 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-600'
+                  }`}
+                >
+                  {digit !== undefined ? digit : '—'}
+                </div>
+              );
+            })}
+          </div>
+          <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+            Each completed challenge logs a digit here. Use them in order when you reach the door terminal.
+          </p>
         </div>
       </div>
 

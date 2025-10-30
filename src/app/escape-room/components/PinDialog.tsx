@@ -14,6 +14,7 @@ interface PinDialogProps {
 export function PinDialog({ expectedDigits, onSubmit, onClose }: PinDialogProps) {
   const [pin, setPin] = useState('');
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error', message: string } | null>(null);
+  const pinLength = expectedDigits.length > 0 ? expectedDigits.length : 3;
 
   const handleSubmit = () => {
     const expectedPin = expectedDigits.join('');
@@ -44,7 +45,7 @@ export function PinDialog({ expectedDigits, onSubmit, onClose }: PinDialogProps)
             Exit Terminal
           </DialogTitle>
           <DialogDescription className="text-slate-600 dark:text-slate-400">
-            Enter the 3-digit PIN to unlock the door
+            Enter the {pinLength}-digit PIN to unlock the door.
           </DialogDescription>
         </DialogHeader>
 
@@ -58,16 +59,22 @@ export function PinDialog({ expectedDigits, onSubmit, onClose }: PinDialogProps)
 
           {/* PIN Input */}
           <div className="flex flex-col items-center gap-4">
-            <label className="text-slate-300 text-sm">Enter PIN:</label>
+            <label className="text-slate-500 dark:text-slate-400 text-sm">
+              Enter the {pinLength}-digit PIN in the order collected:
+            </label>
             <InputOTP
-              maxLength={3}
+              maxLength={pinLength}
               value={pin}
               onChange={(value: string) => setPin(value)}
             >
               <InputOTPGroup>
-                <InputOTPSlot index={0} className="w-16 h-16 text-2xl bg-white dark:bg-slate-950 border-neutral-500" />
-                <InputOTPSlot index={1} className="w-16 h-16 text-2xl bg-white dark:bg-slate-950 border-neutral-500" />
-                <InputOTPSlot index={2} className="w-16 h-16 text-2xl bg-white dark:bg-slate-950 border-neutral-500" />
+                {Array.from({ length: pinLength }).map((_, index) => (
+                  <InputOTPSlot
+                    key={`pin-slot-${pinLength}-${index}`}
+                    index={index}
+                    className="w-14 h-14 text-xl bg-white dark:bg-slate-950 border-neutral-500"
+                  />
+                ))}
               </InputOTPGroup>
             </InputOTP>
           </div>
@@ -100,7 +107,7 @@ export function PinDialog({ expectedDigits, onSubmit, onClose }: PinDialogProps)
             <Button
               onClick={handleSubmit}
               className="flex-1 bg-green-600 hover:bg-green-700"
-              disabled={pin.length !== 3}
+              disabled={pin.length !== pinLength}
             >
               Unlock Door
             </Button>

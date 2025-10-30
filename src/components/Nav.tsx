@@ -4,12 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
-import { setCookie, getCookie } from "@/lib/cookies";
+import { setCookie } from "@/lib/cookies";
 
 const links = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/escape-room", label: "Escape Room" },
+  { href: "/leaderboard", label: "Leaderboard" },
 ];
 
 

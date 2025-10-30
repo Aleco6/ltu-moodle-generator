@@ -8,8 +8,10 @@ export default function EscapeRoomPage() {
   const [gameStarted, setGameStarted] = useState(false);
   const [difficulty, setDifficulty] = useState<Difficulty>('easy');
   const [timerMinutes, setTimerMinutes] = useState(30);
+  const [playerName, setPlayerName] = useState('');
 
-  const handleStart = (selectedDifficulty: Difficulty, selectedTimer: number) => {
+  const handleStart = (name: string, selectedDifficulty: Difficulty, selectedTimer: number) => {
+    setPlayerName(name);
     setDifficulty(selectedDifficulty);
     setTimerMinutes(selectedTimer);
     setGameStarted(true);
@@ -20,7 +22,7 @@ export default function EscapeRoomPage() {
       {!gameStarted ? (
         <IntroDialog onStart={handleStart} />
       ) : (
-        <EscapeRoom difficulty={difficulty} timerMinutes={timerMinutes} />
+        <EscapeRoom playerName={playerName} difficulty={difficulty} timerMinutes={timerMinutes} />
       )}
     </div>
   );
