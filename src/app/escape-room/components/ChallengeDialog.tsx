@@ -51,14 +51,14 @@ export function ChallengeDialog({
 
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 border-purple-500">
+      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 border-neutral-300 dark:border-neutral-700">
         <DialogHeader>
-          <DialogTitle className="flex items-center justify-between text-purple-600 dark:text-purple-400">
+          <DialogTitle className="flex items-center justify-between text-neutral-800 dark:text-neutral-200">
             <div className="flex items-center gap-2">
               <Terminal className="w-5 h-5" />
               {terminalTitle}
             </div>
-            <Badge variant="outline" className="border-purple-600 dark:border-purple-500 text-purple-700 dark:text-purple-400">
+            <Badge variant="outline" className="border-neutral-500 dark:border-neutral-500 text-neutral-700 dark:text-neutral-300">
               Stage {currentStage}/{totalStages}
             </Badge>
           </DialogTitle>
@@ -69,9 +69,9 @@ export function ChallengeDialog({
 
         <div className="space-y-4">
           {/* Goal */}
-          <Alert className="bg-purple-100 dark:bg-purple-900/20 border-purple-500">
-            <Code2 className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-            <AlertDescription className="text-purple-800 dark:text-purple-300">
+          <Alert className="bg-neutral-100 dark:bg-neutral-900/20 border-neutral-500">
+            <Code2 className="w-4 h-4 text-neutral-600 dark:text-neutral-400" />
+            <AlertDescription className="text-neutral-800 dark:text-neutral-300">
               <strong>Goal:</strong> {task.goal}
             </AlertDescription>
           </Alert>
@@ -91,7 +91,7 @@ export function ChallengeDialog({
               value={code}
               onChange={(e) => setCode(e.target.value)}
               placeholder="Write your solution here..."
-              className="font-mono text-sm min-h-[300px] bg-slate-50 dark:bg-slate-950 text-green-700 dark:text-green-400 border-purple-500"
+              className="font-mono text-sm min-h-[300px] bg-slate-50 dark:bg-slate-950 text-green-700 dark:text-green-400 border-neutral-300 dark:border-neutral-700"
             />
           </div>
 
@@ -145,7 +145,7 @@ export function ChallengeDialog({
             </Button>
             <Button
               onClick={checkSolution}
-              className="bg-purple-600 hover:bg-purple-700"
+              className="bg-neutral-800 hover:bg-neutral-700 text-white"
               disabled={!code.trim()}
             >
               Check Solution

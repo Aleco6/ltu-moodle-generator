@@ -184,15 +184,15 @@ export function EscapeRoom({ difficulty, timerMinutes }: EscapeRoomProps) {
   // Game Over Screen
   if (gameOver) {
     return (
-      <div className="min-h-screen bg-red-950 flex items-center justify-center p-4">
-        <div className="max-w-2xl bg-red-900 border-2 border-red-500 rounded-lg p-8 shadow-2xl text-center">
-          <AlertTriangle className="w-24 h-24 text-red-400 mx-auto mb-6" />
-          <h1 className="text-4xl font-bold text-red-400 mb-4">TIME&apos;S UP!</h1>
-          <p className="text-xl text-red-200 mb-6">
+      <div className="min-h-screen bg-red-50 dark:bg-red-950 flex items-center justify-center p-4">
+        <div className="max-w-2xl bg-red-100 dark:bg-red-900 border-2 border-red-500 rounded-lg p-8 shadow-2xl text-center">
+          <AlertTriangle className="w-24 h-24 text-red-700 dark:text-red-400 mx-auto mb-6" />
+          <h1 className="text-4xl font-bold text-red-700 dark:text-red-400 mb-4">TIME&apos;S UP!</h1>
+          <p className="text-xl text-red-700 dark:text-red-200 mb-6">
             Sprint Zero claims another victim. The project manager&apos;s process has consumed you.
           </p>
-          <div className="bg-red-950/50 p-4 rounded border border-red-400/50 mb-6">
-            <p className="text-red-300 italic">
+          <div className="bg-red-50 dark:bg-red-950/50 p-4 rounded border border-red-300 dark:border-red-400/50 mb-6">
+            <p className="text-red-700 dark:text-red-300 italic">
               &quot;Perhaps next time you&apos;ll plan your sprints better. Consider this... a lesson in time management.&quot;
             </p>
           </div>
@@ -214,11 +214,11 @@ export function EscapeRoom({ difficulty, timerMinutes }: EscapeRoomProps) {
   }
 
   return (
-    <div className="min-h-screen bg-purple-50 dark:bg-purple-950 p-4">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 p-4">
       {/* Header */}
       <div className="max-w-6xl mx-auto mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-3xl font-bold text-purple-600 dark:text-purple-400">
+          <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200">
             Sprint Zero Escape Room
           </h1>
           
@@ -230,7 +230,7 @@ export function EscapeRoom({ difficulty, timerMinutes }: EscapeRoomProps) {
         </div>
 
         {/* Progress Bar */}
-        <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-purple-200 dark:border-purple-700">
+        <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-neutral-300 dark:border-neutral-700">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
               Progress: {completedTasks.size} / {totalTasks} tasks completed
@@ -248,7 +248,7 @@ export function EscapeRoom({ difficulty, timerMinutes }: EscapeRoomProps) {
 
       {/* Game Area */}
       <div className="max-w-6xl mx-auto">
-        <div className="relative bg-white dark:bg-slate-800 rounded-lg border border-purple-200 dark:border-purple-700 overflow-hidden">
+        <div className="relative bg-white dark:bg-slate-800 rounded-lg border border-neutral-300 dark:border-neutral-700 overflow-hidden">
           {/* Room Image */}
           <div 
             className="relative w-full cursor-pointer"
@@ -330,7 +330,7 @@ export function EscapeRoom({ difficulty, timerMinutes }: EscapeRoomProps) {
           </div>
 
           {/* Legend */}
-          <div className="p-4 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700">
+          <div className="p-4 bg-slate-50 dark:bg-slate-900 border-t border-neutral-200 dark:border-neutral-700">
             <div className="flex items-center justify-center gap-6 text-sm">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-red-500 rounded-full border border-white"></div>

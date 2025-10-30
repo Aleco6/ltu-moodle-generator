@@ -37,21 +37,21 @@ export function PinDialog({ expectedDigits, onSubmit, onClose }: PinDialogProps)
 
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="max-w-md bg-slate-900 border-green-500">
+      <DialogContent className="max-w-md bg-white dark:bg-slate-900 border-green-500">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-green-400">
+          <DialogTitle className="flex items-center gap-2 text-green-700 dark:text-green-400">
             <Lock className="w-5 h-5" />
             Exit Terminal
           </DialogTitle>
-          <DialogDescription className="text-slate-400">
+          <DialogDescription className="text-slate-600 dark:text-slate-400">
             Enter the 3-digit PIN to unlock the door
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6 py-4">
           {/* Hint */}
-          <Alert className="bg-blue-900/20 border-blue-500">
-            <AlertDescription className="text-blue-400 text-sm">
+          <Alert className="bg-blue-100 dark:bg-blue-900/20 border-blue-500">
+            <AlertDescription className="text-blue-700 dark:text-blue-400 text-sm">
               💡 Use the digits you collected from completing the challenges, in order.
             </AlertDescription>
           </Alert>
@@ -65,9 +65,9 @@ export function PinDialog({ expectedDigits, onSubmit, onClose }: PinDialogProps)
               onChange={(value: string) => setPin(value)}
             >
               <InputOTPGroup>
-                <InputOTPSlot index={0} className="w-16 h-16 text-2xl bg-slate-950 border-purple-500" />
-                <InputOTPSlot index={1} className="w-16 h-16 text-2xl bg-slate-950 border-purple-500" />
-                <InputOTPSlot index={2} className="w-16 h-16 text-2xl bg-slate-950 border-purple-500" />
+                <InputOTPSlot index={0} className="w-16 h-16 text-2xl bg-white dark:bg-slate-950 border-neutral-500" />
+                <InputOTPSlot index={1} className="w-16 h-16 text-2xl bg-white dark:bg-slate-950 border-neutral-500" />
+                <InputOTPSlot index={2} className="w-16 h-16 text-2xl bg-white dark:bg-slate-950 border-neutral-500" />
               </InputOTPGroup>
             </InputOTP>
           </div>

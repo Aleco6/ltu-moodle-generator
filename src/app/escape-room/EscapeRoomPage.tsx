@@ -16,7 +16,7 @@ export default function EscapeRoomPage() {
   };
 
   return (
-    <div className="min-h-screen bg-purple-50 dark:bg-purple-950">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
       {!gameStarted ? (
         <IntroDialog onStart={handleStart} />
       ) : (

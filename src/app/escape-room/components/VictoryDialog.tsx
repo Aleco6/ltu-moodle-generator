@@ -55,7 +55,7 @@ export function VictoryDialog() {
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 py-4">
             <div className="bg-slate-950/30 p-4 rounded">
-              <div className="text-2xl text-purple-400">3/3</div>
+              <div className="text-2xl text-slate-300">3/3</div>
               <div className="text-sm text-slate-400">Challenges</div>
             </div>
             <div className="bg-slate-950/30 p-4 rounded">

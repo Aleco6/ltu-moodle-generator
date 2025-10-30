@@ -58,7 +58,7 @@ export function IntroDialog({ onStart }: IntroDialogProps) {
         
         <div className="space-y-4 mb-6 text-slate-700 dark:text-slate-300">
           <div>
-            <h2 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-2">Setting</h2>
+            <h2 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200 mb-2">Setting</h2>
             <p>
               You&apos;re a junior dev team trapped in Sprint Zero, the company&apos;s cursed innovation lab. Your project manager has gone mad with process power.
             </p>
@@ -72,7 +72,7 @@ export function IntroDialog({ onStart }: IntroDialogProps) {
           </div>
 
           <div>
-            <h2 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-2">Objective</h2>
+            <h2 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200 mb-2">Objective</h2>
             <ul className="list-disc list-inside space-y-1 ml-4">
               <li>Complete coding challenges at each terminal.</li>
               <li>Each finished challenge reveals one random digit of a PIN.</li>
@@ -82,7 +82,7 @@ export function IntroDialog({ onStart }: IntroDialogProps) {
 
           {/* Difficulty Selection */}
           <div className="border-t border-slate-300 dark:border-slate-700 pt-4">
-            <h2 className="text-xl font-semibold text-purple-600 dark:text-purple-400 mb-3">Choose Your Challenge</h2>
+            <h2 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200 mb-3">Choose Your Challenge</h2>
             <div className="grid grid-cols-3 gap-3 mb-4">
               {difficultyOptions.map((option) => {
                 const isSelected = selectedDifficulty === option.value;
