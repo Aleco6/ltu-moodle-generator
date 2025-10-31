@@ -56,8 +56,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Copy Prisma files and database
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/prisma/dev.db ./prisma/dev.db
+COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
+
+# Ensure the nextjs user can write to the database file
+RUN chmod 755 ./prisma && chmod 666 ./prisma/dev.db
 
 USER nextjs
 
